@@ -22,40 +22,11 @@ login_manager.init_app(app)
 login_manager.login_view = "login"
 
 
-# silly user model
-class User(UserMixin):
-    def __init__(self, id, email=None, password=None):
-        self.id = id
-        self.email = email
-        self.password = password
-
-    @property
-    def is_authenticated(self):
-        return True
-
-    @property
-    def is_active(self):
-        return True
-
-    @property
-    def is_anonymous(self):
-        return False
-
-    def get_id(self):
-        try:
-            return unicode(self.id)  # python 2
-        except NameError:
-            return str(self.id)  # python 3
-
-    def __repr__(self):
-        return "%d/%s/%s" % (self.id, self.email, self.password)
-
 UPLOAD_FOLDER = '/tmp'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 # create some users with ids 1 to 20
-users = [User('1', 'biblioteca', 'bib123456'), User('2', 'alex.pereira@planejamento.gov.br', '@Lex2017')]
 
 def getIndex(items, test, key):
     if not items or not test:
