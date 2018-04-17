@@ -5,8 +5,8 @@ from flask_login import LoginManager, UserMixin, \
     login_required, login_user, logout_user, current_user
 from werkzeug.utils import secure_filename
 
-from upload_biblioteca.dspace import upload_panmacro
-from upload_biblioteca.forms import UploadForm
+from dspace import upload_panmacro
+from forms import UploadForm
 
 app = Flask(__name__)
 
