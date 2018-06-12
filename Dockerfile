@@ -1,7 +1,7 @@
 FROM tiangolo/uwsgi-nginx-flask:flask
 
 COPY ./app /app
-
+COPY ./users.py /app/
 # copy over our requirements.txt file
 COPY ./app/requirements.txt /tmp/
 # upgrade pip and install required python packages
