@@ -3,10 +3,13 @@
 import json
 import locale
 import requests
+import os
 from datetime import datetime
 from calendar import TimeEncoding, month_name
 
-url = "http://bibliotecadigital.planejamento.gov.br/rest"
+
+# url = "http://bibliotecadigital.planejamento.gov.br/rest"
+url = "http://localhost/rest"
 login_header = {'Content-Type': 'application/x-www-form-urlencoded'}
 login_url = url + "/login"
 
@@ -44,17 +47,25 @@ def upload_panmacro(email, password, filename):
        <metadata> <key>dc.rights</key> <value>Isento de Licenciamento</value> <language>pt_BR</language> </metadata> 
        <metadata> <key>dc.language.iso</key> <value>Português (Brasil)</value> <language>pt_BR</language> </metadata> </item>'''.format(mes, ano, mes_ano, date)
 
-    post_item_url = url + '/collections/{0}/items'.format("514baa86-9334-40aa-9e62-7279f09b84a9")
+    # post_item_url = url + '/collections/{0}/items'.format("514baa86-9334-40aa-9e62-7279f09b84a9")
+    post_item_url = url + '/collections/{0}/items'.format("5b2a67af-fd57-453a-87e1-ee3c36eb90f5")
     r2 = requests.post(post_item_url, data=data.encode('utf-8'), headers=headers, cookies=r.cookies)
     print r2.status_code
     json_data = r2.json()
     upload_url = url + '/items/{0}/bitstreams'.format(json_data['uuid'])
-    upload_header = {'Accept': 'application/xml'}
+    upload_header = {'mime-type': 'application/pdf','Accept': 'application/json'}
 
     with open(filename, 'rb') as f:
         r3 = requests.post(upload_url, files={filename: f}, headers=upload_header, cookies=r.cookies)
 
     print r3
+    put_json = r3.json()
+    put_url = url + '/bitstreams/{0}'.format(put_json['uuid'])
+    put_header = {'Content-type': 'application/xml', 'Accept': 'application/json'}
+    put_data = "<bitstream><name>{0}</name></bitstream>".format(os.path.basename(filename))
+    r4 = requests.put(put_url, data=put_data.encode('utf-8'), headers=put_header, cookies=r.cookies)
+    print r4
+
     # curl -v -X POST --data "email=admin@dspace.org&password=mypass" https://dspace.myu.edu/rest/login
     # curl -k -4 --silent --cookie "JSESSIONID=AF457CA04FBB62C1167D384AEAEF46EF"
     # -H "accept: application/xml" -H "Content-Type: application/xml"
