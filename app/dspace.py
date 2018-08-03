@@ -25,7 +25,7 @@ def get_month_name(month_no, locale):
 
 def upload_panmacro(email, password, filename):
     #locale.setlocale(locale.LC_ALL, 'pt_BR')
-
+    locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
     login_data = {'email': email, 'password': password}
     r = requests.post(login_url, data=login_data, headers=login_header)
     print "login status: {0}".format(r.status_code)

@@ -7,6 +7,10 @@ COPY ./app/requirements.txt /tmp/
 # upgrade pip and install required python packages
 RUN pip install -U pip
 RUN pip install -r /tmp/requirements.txt
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y locales
+RUN sed -i -e 's/# pt_BR.UTF-8 UTF-8/pt_BR.UTF-8 UTF-8/' /etc/locale.gen && \
+    dpkg-reconfigure --frontend=noninteractive locales && \
+    update-locale LANG=pt_BR.UTF-8
 
-RUN export LC_ALL="en_US.UTF-8" && export LC_CTYPE="en_US.UTF-8"
-#RUN dpkg-reconfigure locales
+ENV LANG pt_BR.UTF-8
+ENV LC_ALL pt_BR.UTF-8
