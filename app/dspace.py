@@ -33,7 +33,7 @@ def upload_panmacro(email, password, filename):
     headers = {'Content-type': 'application/xml', 'Accept': 'application/json'}
     date = datetime.today() #'2018-04-01'
     ##mes = get_month_name(date.strftime("%m"), "pt_BR.UTF-8")  #u'Março'
-    mes = date.strftime("%B")
+    mes = date.strftime("%B").capitalize()
     ano = date.strftime("%Y")
     mes_ano = u'{0}/{1}'.format(mes,ano)
 
